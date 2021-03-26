@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import products.*;
+import products.Product;
 import utilities.Common;
 
 import java.io.ByteArrayOutputStream;
@@ -35,64 +35,35 @@ public class TestReceiptPrinter {
     void setup(){
         System.setOut(new PrintStream(byteArrayOutputStream));
 
-        Product book = Factory.createProduct(new Book(), false, false);
-        Product musicCD = Factory.createProduct(new MusicCD(), true, false);
-        Product chocolateBar = Factory.createProduct(new ChocolateBar(), false, false);
-        Product perfume2 = Factory.createProduct(new Perfume2(), true, true);
+        Product book = Factory.createProductAndApplyTaxes("book", 12.49, false, false);
+        Product musicCD = Factory.createProductAndApplyTaxes("Music CD", 14.99, true, false);
+        Product chocolateBar = Factory.createProductAndApplyTaxes("Chocolate Bar", 0.85, false, false);
+        Product perfume = Factory.createProductAndApplyTaxes("Perfume",47.50, true, true);
 
         inventory = new ArrayList<>(Arrays.asList(
                 new ProductWithQuantity(book, 1),
                 new ProductWithQuantity(musicCD, 1),
                 new ProductWithQuantity(chocolateBar, 1),
-                new ProductWithQuantity(perfume2, 2)));
+                new ProductWithQuantity(perfume, 2)));
 
         ReceiptPrinter printer = new ReceiptPrinter(inventory);
-        printer.generateRecept();
+        printer.generateReceipt();
 
-        generateExpectedValues(inventory);
-        setOutputList(byteArrayOutputStream.toString());
-    }
+        ExpectedValues expectedValues = TestCommon.generateExpectedValues(inventory);
+        expectedTotalSalesTax = expectedValues.getExpectedTotalSalesTax();
+        expectedTotal = expectedValues.getExpectedTotal();
 
-    void generateExpectedValues(List<ProductWithQuantity> inventory){
-        for(ProductWithQuantity productWithQuantity: inventory){
-            double cost = productWithQuantity.getQuantity() * productWithQuantity.getProduct().getCost();
-            double baseCost = productWithQuantity.getQuantity() * productWithQuantity.getProduct().getBaseCost();
-            double tax = cost - baseCost;
-            expectedTotalSalesTax += tax;
-            expectedTotal += cost;
-        }
-
-    }
-
-    void setOutputList(String multiLine){
-        String[] outputs = multiLine.split("[\n\r]");
-        outputList = Stream.of(outputs)
-                .filter(s->!s.isBlank())
-                .map(String::trim)
-                .collect(Collectors.toList());
+        outputList = TestCommon.setOutputList(byteArrayOutputStream.toString());
     }
 
     @Test
     void testTotalSalesTax(){
-        Pattern pattern = Pattern.compile(salesTaxRegex);
-        Matcher matcher = pattern.matcher(outputList.get(outputList.size()-2));
-        if (matcher.find()){
-            double totalSalesTax = Double.parseDouble(matcher.group("totalSalesTax"));
-            Assertions.assertEquals(Common.numberFormat.format(expectedTotalSalesTax),
-                    Common.numberFormat.format(totalSalesTax));
-        }
-
+        TestCommon.testTotalTax(outputList.get(outputList.size()-2), expectedTotalSalesTax);
     }
 
     @Test
     void testTotalCost(){
-        Pattern pattern = Pattern.compile(totalCostRegex);
-        Matcher matcher = pattern.matcher(outputList.get(outputList.size()-1));
-        if (matcher.find()){
-            double totalCost = Double.parseDouble(matcher.group("totalCost"));
-            Assertions.assertEquals(Common.numberFormat.format(expectedTotal),
-                    Common.numberFormat.format(totalCost));
-        }
+        TestCommon.testTotalCost(outputList.get(outputList.size()-1), expectedTotal);
     }
 
     @Test

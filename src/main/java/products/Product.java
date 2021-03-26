@@ -4,11 +4,6 @@ public abstract class Product {
     private double baseCost;
     private String name;
 
-    public Product(double baseCost, String name) {
-        this.baseCost = baseCost;
-        this.name = name;
-    }
-
     public double getBaseCost() {
         return baseCost;
     }

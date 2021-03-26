@@ -18,7 +18,7 @@ public class ReceiptPrinter {
         inventory.add(new ProductWithQuantity(product, quantity));
     }
 
-    public void generateRecept(){
+    public void generateReceipt(){
         double totalTax = 0.0;
         double total = 0.0;
 

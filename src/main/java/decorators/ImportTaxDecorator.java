@@ -8,10 +8,10 @@ public class ImportTaxDecorator extends TaxDecorator {
     private static final double tax = 0.05;
 
     public ImportTaxDecorator(Product product) {
-        super(product.getBaseCost(), product.getName());
+
         this.product = product;
-        // setBaseCost(product.getBaseCost());
-        // setName(product.getName());
+        setBaseCost(product.getBaseCost());
+        setName(product.getName());
 
     }
 

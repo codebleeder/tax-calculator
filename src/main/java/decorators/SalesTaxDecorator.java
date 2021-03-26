@@ -8,6 +8,7 @@ public class SalesTaxDecorator extends TaxDecorator {
     private static final double tax = 0.10;
 
     public SalesTaxDecorator(Product product) {
+
         this.product = product;
         setBaseCost(product.getBaseCost());
         setName(product.getName());
