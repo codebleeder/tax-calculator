@@ -1,6 +1,5 @@
 import factory.ProductWithQuantity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import utilities.Common;
 
 import java.util.ArrayList;
