@@ -1,6 +1,6 @@
 package factory;
 
-import decorators.ImportTaxDecorator;
+
 import products.Product;
 import utilities.Common;
 
@@ -31,8 +31,6 @@ public class ReceiptPrinter {
             totalTax += tax;
 
             sb.append(productWithQuantity.getQuantity())
-                    .append(" ")
-                    .append((productWithQuantity.getProduct() instanceof ImportTaxDecorator ? "imported" : ""))
                     .append(" ")
                     .append(productWithQuantity.getProduct().getName())
                     .append(": ")

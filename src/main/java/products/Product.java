@@ -1,8 +1,19 @@
 package products;
 
-public abstract class Product {
+import utilities.Common;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Product {
     private double baseCost;
     private String name;
+    private List<Double> taxes = new ArrayList<>();
+
+    public Product(double baseCost, String name) {
+        this.baseCost = baseCost;
+        this.name = name;
+    }
 
     public double getBaseCost() {
         return baseCost;
@@ -12,7 +23,13 @@ public abstract class Product {
         return name;
     }
 
-    public abstract double getCost();
+    public double getCost(){
+        double cost = getBaseCost();
+        for(double tax: getTaxes()){
+            cost += Common.roundOff(getBaseCost() * tax);
+        }
+        return cost;
+    };
 
     public void setBaseCost(double baseCost) {
         this.baseCost = baseCost;
@@ -20,5 +37,17 @@ public abstract class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Double> getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(List<Double> taxes) {
+        this.taxes = taxes;
+    }
+
+    public void addTax(double tax){
+        taxes.add(tax);
     }
 }

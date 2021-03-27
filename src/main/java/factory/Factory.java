@@ -1,8 +1,8 @@
 package factory;
 
 
-import decorators.ImportTaxDecorator;
-import decorators.SalesTaxDecorator;
+
+import models.Constants;
 import products.Product;
 
 import java.util.*;
@@ -13,23 +13,15 @@ public class Factory {
             "pill", "pills", "tablet", "tablets", "book", "books"));
 
     public static Product createBaseProduct(String name, double baseCost){
-        Product product = new Product() {
-            @Override
-            public double getCost() {
-                return getBaseCost();
-            }
-        };
-        product.setName(name);
-        product.setBaseCost(baseCost);
-        return product;
+       return new Product(baseCost, name);
     }
 
     public static Product applyTaxes(Product product, boolean applySalesTax, boolean isImported){
         if (applySalesTax){
-            product = new SalesTaxDecorator(product);
+            product.addTax(Constants.SALES_TAX);
         }
         if (isImported) {
-            product = new ImportTaxDecorator(product);
+            product.addTax(Constants.IMPORT_TAX);
         }
         return product;
     }

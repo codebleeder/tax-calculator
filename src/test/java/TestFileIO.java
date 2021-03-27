@@ -41,7 +41,7 @@ public class TestFileIO {
         Product boxOfImportedChocolates = Factory.createProductAndApplyTaxes("box of imported chocolates", 11.25, false, true);
 
         inventory = new ArrayList<>(Arrays.asList(
-                new ProductWithQuantity(importedBottlesOfPerfume, 2),
+                new ProductWithQuantity(importedBottlesOfPerfume, 1),
                 new ProductWithQuantity(bottleOfPerfume, 1),
                 new ProductWithQuantity(headachePills, 1),
                 new ProductWithQuantity(boxOfImportedChocolates, 1)

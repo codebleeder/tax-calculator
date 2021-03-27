@@ -1,4 +1,4 @@
-import decorators.ImportTaxDecorator;
+
 import factory.Factory;
 import factory.ProductWithQuantity;
 import factory.ReceiptPrinter;
@@ -88,7 +88,6 @@ public class TestReceiptPrinter {
         long quantity = productWithQuantity.getQuantity();
 
         sj.add(String.valueOf(quantity))
-                .add(product instanceof ImportTaxDecorator ? "imported" : "")
                 .add(product.getName() + ":")
                 .add(Common.numberFormat.format((quantity * product.getCost())));
 
